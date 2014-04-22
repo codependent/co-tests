@@ -26,7 +26,7 @@ co(function* () {
   var file1 = yield readFile('examples/fich1.txt');
   var file2 = yield readFile('examples/fich2.txt');
   return [file1,file2]
-})(function(err,data){console.log("co result " +err+"-"+data)});
+})(function(err,data){console.log("co result - err:" +err+" - data:"+data)});
 
 function co2(generator) {
   var gen = generator();
@@ -42,8 +42,7 @@ function co2(generator) {
 co2(function* () {
   var file1 = yield readFile('examples/fich1.txt');
   var file2 = yield readFile('examples/fich2.txt');
-  //console.log("co2-1 "+file1);
-  //console.log("co2-2 "+file2);
+  console.log("co2 - "+file1+"-"+file2);
 });
 
 function co3(generator) {
@@ -68,7 +67,7 @@ co3(function* () {
   var file2 = yield readFile('examples/fich2.txt');
   return [file1,file2];
 })(function(err,result){
-  console.log("co3 result "+err + "-"+result)
+  console.log("co3-1 - err: "+err + " - result: "+result)
 });
 
 var readFileThunkified = thunkify(fs.readFile);
@@ -78,5 +77,5 @@ co3(function* () {
   var file2 = yield readFileThunkified('examples/fich2.txt');
   return [file1,file2];
 })(function(err,result){
-  console.log("co4 result "+err + "-"+result)
+  console.log("co3-2 - err: "+err + " - result: "+result)
 });

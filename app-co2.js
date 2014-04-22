@@ -36,7 +36,7 @@ function *jose(){
 
 
 fstat('examples/fich1.txt')(function(err,result){
-  console.log(result.size);
+  console.log("fstat result.size:"+result.size);
 });
 
 
@@ -44,7 +44,38 @@ co(function *(){
   var a = yield foo();
   var b = yield bar();
   var c = yield jose();
-  console.log(a);
-  console.log(b);
-  console.log(c);
+  console.log("co0-a:"+a);
+  console.log("co0-b:"+b);
+  console.log("co0-c:"+c);
+})()
+
+// 3 concurrent stat()s at a time
+co(function *(){
+  console.log("***concurrent1***")
+  var a = yield [size('examples/fich1.txt'), size('examples/fich2.txt'), size('examples/fich3.txt')];
+  var b = yield [size('examples/fich1.txt'), size('examples/fich2.txt'), size('examples/fich3.txt')];
+  var c = yield [size('examples/fich1.txt'), size('examples/fich2.txt'), size('examples/fich3.txt')];
+  console.log("c1-a:"+a);
+  console.log("c1-a:"+b);
+  console.log("c1-a:"+c);
+})()
+
+// 9 concurrent stat()s
+co(function *(){
+  console.log("***concurrent2***")
+  var a = [size('examples/fich1.txt'), size('examples/fich2.txt'), size('examples/fich3.txt')];
+  var b = [size('examples/fich3.txt'), size('examples/fich2.txt'), size('examples/fich1.txt')];
+  var c = [size('examples/fich1.txt'), size('examples/fich1.txt'), size('examples/fich1.txt')];
+  var d = yield [a, b, c];
+  console.log("c2:"+d);
+})()
+
+// 3
+co(function *(){
+  console.log("***concurrent3***")
+  var a = size('examples/fich1.txt');
+  var b = size('examples/fich2.txt');
+  var c = size('examples/fich3.txt');
+  var res = yield [a, b, c];
+  console.log("c3:"+res);
 })()

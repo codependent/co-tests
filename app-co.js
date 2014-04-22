@@ -15,9 +15,13 @@ co(function *(){
 })()
 
 co(function *(){
-  var a = yield get('http://www.google.es');
-  var b = yield get('http://www.mutua.es');
-  var c = yield get('http://www.fundacionmutua.es');
-  //var res = yield [a, b, c];
-  //console.log(res);
+  var urls = {
+    google: get('http://www.google.es'),
+    mutua: get('http://www.mutua.es'),
+    fundacionmutua: get('http://www.fundacionmutua.es')
+  }
+  var res = yield urls;
+  console.log(res.google);
+  console.log(res.mutua);
+  console.log(res.fundacionmutua);
 })()
